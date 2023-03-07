@@ -19,7 +19,7 @@ showwelcome=function(){
 };
 
 Xpasslength=8;
-signinvalidation = function(){
+signinvalidation = function(){ /* To sign in */
   var sipass=document.getElementById("sipass").value;
   var siemail=document.getElementById("siemail").value;
   if(sipass.length<Xpasslength){
@@ -36,7 +36,7 @@ signinvalidation = function(){
     return false;
   }
 };
-signupvalidation = function(){
+signupvalidation = function(){ /* To sign up */
   var supass=document.getElementById("supass").value;
   var suconf=document.getElementById("suconf").value;
   if(supass!=suconf){
@@ -62,7 +62,7 @@ signupvalidation = function(){
   return false;
 };
 
-getuserinfo=function(){
+getuserinfo=function(){ /* To get a user's details */
   var token=localStorage.getItem("token");
   var reply=serverstub.getUserDataByToken(token);
   var data=reply.data;
@@ -74,7 +74,7 @@ getuserinfo=function(){
   document.getElementById("homeemail").innerHTML=data.email;
 };
 
-posttomywall=function(){
+posttomywall=function(){ /* To post to own wall */
   var token=localStorage.getItem("token");
   var data=serverstub.getUserDataByToken(token).data;
   var email=data.email;
@@ -98,7 +98,7 @@ posttomywall=function(){
   }
 };
 
-postedmessage=function(){
+postedmessage=function(){ /* To get the posted messages in own wall */
   var token=localStorage.getItem("token");
   var reply=serverstub.getUserMessagesByToken(token);
   if(reply.success==true){
@@ -111,7 +111,7 @@ postedmessage=function(){
   }
 };
 
-searchuser=function(){
+searchuser=function(){ /* To search for a user in the system */
   var token=localStorage.getItem("token");
   var email=document.getElementById("search").value;
   var reply=serverstub.getUserDataByEmail(token,email);
@@ -127,7 +127,7 @@ searchuser=function(){
   }
 };
 
-getanotheruserinfo=function(reply,email){
+getanotheruserinfo=function(reply,email){ /* To get another user's details */
   var token=localStorage.getItem("token");
   var data=reply.data;
   document.getElementById("infotable").style.display="block";
@@ -142,7 +142,7 @@ getanotheruserinfo=function(reply,email){
   document.getElementById("postanothermessages").style.display="block";
 };
 
-posttoanotherwall=function(){
+posttoanotherwall=function(){ /* To post to another user's wall */
   var token=localStorage.getItem("token");
   var email=document.getElementById("search").value;
   var content=document.getElementById("anotherpost").value;
@@ -165,7 +165,7 @@ posttoanotherwall=function(){
   }
 };
 
-postedanothermessage=function(){
+postedanothermessage=function(){ /* To get the posted messages in another user's wall */
   var token=localStorage.getItem("token");
   var email=document.getElementById("search").value;
   var replymsgs=serverstub.getUserMessagesByEmail(token,email);
@@ -179,7 +179,7 @@ postedanothermessage=function(){
   }
 };
 
-profile = function(evt, tabname){
+profile = function(evt, tabname){ /* To maintain the tab content of the profile view */
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i=0;i<tabcontent.length;i++) {
@@ -199,7 +199,7 @@ profile = function(evt, tabname){
   }
 };
 
-changepass = function(){
+changepass = function(){ /* To change user password */
   var oldpass=document.getElementById("oldpass").value;
   var newpass=document.getElementById("newpass").value;
   var newconf=document.getElementById("newconf").value;
@@ -226,7 +226,7 @@ changepass = function(){
   }
 };
 
-signout = function() {
+signout = function() { /* To sign out */
   var token = localStorage.getItem("token");
   var reply = serverstub.signOut(token);
   if (reply.success == true){
