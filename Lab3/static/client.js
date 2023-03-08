@@ -4,8 +4,10 @@ let token;
 var messages;
 var a=0;
 window.onload = function(){
-  if(localStorage.getItem("token")!=null){
+  let token = localStorage.getItem("token")
+  if(token!=null){
     showprofile();
+    setupconnection();
   }
   else{
     showwelcome();
@@ -42,9 +44,10 @@ function signinvalidation(){
   xhttp.send(JSON.stringify(data));
   xhttp.onreadystatechange=function(){
 	  if (xhttp.readyState==4){ 
-      if(xhttp.status==200 || xhttp.status==201){
+      if(xhttp.status==201){
         token = JSON.parse(xhttp.responseText).data;
         localStorage.setItem("token", token);
+        setupconnection();
         syncstorage();
         loggedinusers[token] = siemail;
         persistloggedinusers();
@@ -54,8 +57,12 @@ function signinvalidation(){
         document.getElementById("welcomemessage").innerHTML = "401 Unauthorized";
         document.getElementById("welcomemessage").style.display = "block";
       }
+      else if(xhttp.status==400){
+        document.getElementById("welcomemessage").innerHTML = "400 Bad Request";
+        document.getElementById("welcomemessage").style.display = "block";
+      }
       else{
-        document.getElementById("welcomemessage").innerHTML = "User does not exist";
+        document.getElementById("welcomemessage").innerHTML = "404 Not Found";
         document.getElementById("welcomemessage").style.display = "block";
       }
 	  }
@@ -341,7 +348,7 @@ function changepass(){
   }
   data = { 'oldpassword': oldpass, 'newpassword': newpass };
   let xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "/change_password", true);
+  xhttp.open("PUT", "/change_password", true);
   xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
   xhttp.setRequestHeader("Authorization", token)
   xhttp.send(JSON.stringify(data));
@@ -366,7 +373,7 @@ function changepass(){
 function signout() {
   token=localStorage.getItem("token");
   let xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "/sign_out", true);
+  xhttp.open("DELETE", "/sign_out", true);
   xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
   xhttp.setRequestHeader("Authorization", token)
   xhttp.send();
@@ -399,21 +406,25 @@ function persistloggedinusers() {
   localStorage.setItem("loggedinusers", JSON.stringify(loggedinusers));
 }
 
-function setupsession(){
-  let connection = new WebSocket('ws://${window.location.hostname}:${window.location.port}/echo_socket');
+function setupconnection(){
+  let connection = new WebSocket('ws://' + location.host + '/echo_socket');
   // Sent token to server
   token=localStorage.getItem("token");
   connection.onopen = function() {
     connection.send(token);
+    /*connection.send(JSON.stringify({"token": token}));*/
   };
   connection.onerror = function(error) {
-    console.log('WebSocket Error' + error);
+    console.log('WebSocket Error: ' + error);
   };
   connection.onmessage = function(message) {
-    if(message.data == "signout"){
+    data = message.data
+    /*data = JSON.parse(message).data*/
+    if(data == 'Signout') {
+      connection.close();
       signout();
     } else{
-      console.log('Server: ' + message.data);
+      console.log('Server: ' + data);
     }
   };
 }

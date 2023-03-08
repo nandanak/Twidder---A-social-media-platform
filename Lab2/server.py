@@ -47,7 +47,7 @@ def sign_in():
                 token = check
                 return "", 409 # Already signed in
         else:
-            return "", 401 # User does not exist
+            return "", 404 # User does not exist
 
 @app.route('/sign_up', methods=['POST'])
 def sign_up():

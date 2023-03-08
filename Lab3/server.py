@@ -9,13 +9,27 @@ from flask import g
 
 app = Flask(__name__)
 sockets = Sock(app)
-#app.debug = True
+loggedIn = {}
 
-@sockets.route('/echo')
-def echo_socket(ws):
+@sockets.route('/echo_socket')
+def echo_socket(sock):
     while True:
-        token = ws.receive()
-        ws.send(message)
+        try:
+            #token = json.loads(sock.receive())
+            token = sock.receive()
+            email = database_helper.check_loginfromtoken(token)
+            if email!=None:
+                email = email[0]
+                oldsock = loggedIn.get(email)
+                loggedIn[email] = sock
+                if oldsock!=None:
+                    try:
+                        #oldsock.send(jsonify({'data': 'Signout'}))
+                        oldsock.send('Signout')
+                    except:
+                        continue
+        except:
+            break
         #With the token you get corresponding email
         #Save connection with email
         #If same email logs in the websocket connection closes
@@ -49,25 +63,25 @@ def sign_in():
         userdata=database_helper.get_userdata(email)
         check=database_helper.check_loginfromemail(email)
         if userdata!=None:
-            if check==None:
-                password=pswd.encode('utf-8')
-                f=database_helper.get_passfromemail(email)
-                userpass=f[0]
-                result=bcrypt.checkpw(password,userpass)
-                if result==False:
-                    return "", 401 # Wrong password
-                else:
-                    letters = 'abcdefghiklmnopqrstuvwwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-                    token = ''
-                    for i in range(0,36):
-                        token += letters[math.floor(random() * len(letters))]
-                    result = database_helper.store_login(token,email)
-                    return jsonify({'data': token}), 201 # Successfully signed in, Token created
+            #if check==None:
+            password=pswd.encode('utf-8')
+            f=database_helper.get_passfromemail(email)
+            userpass=f[0]
+            result=bcrypt.checkpw(password,userpass)
+            if result==False:
+                return "", 401 # Wrong password
             else:
-                token = check
-                return "", 409 # Already signed in
+                letters = 'abcdefghiklmnopqrstuvwwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+                token = ''
+                for i in range(0,36):
+                    token += letters[math.floor(random() * len(letters))]
+                result = database_helper.store_login(token,email)
+                return jsonify({'data': token}), 201 # Successfully signed in, Token created
+            #else:
+                #token = check
+                #return "", 409 # Already signed in
         else:
-            return "", 401 # User does not exist
+            return "", 404 # User does not exist
 
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
