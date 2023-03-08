@@ -15,29 +15,24 @@ loggedIn = {}
 def echo_socket(sock):
     while True:
         try:
-            #token = json.loads(sock.receive())
-            token = sock.receive()
-            email = database_helper.check_loginfromtoken(token)
-            if email!=None:
+            token = sock.receive() # Token received from client
+            email = database_helper.check_loginfromtoken(token) 
+            if email!=None: # If email exists in database
                 email = email[0]
-                oldsock = loggedIn.get(email)
-                loggedIn[email] = sock
-                if oldsock!=None:
+                oldsock = loggedIn.get(email) # Get connection from dictionary by seacrhing with email
+                loggedIn[email] = sock # Set new connection 
+                if oldsock!=None: # If old connection exists
                     try:
-                        #oldsock.send(jsonify({'data': 'Signout'}))
-                        oldsock.send('Signout')
+                        oldsock.send('Signout') # Send signout message to client side
+                        oldtoken = database_helper.check_loginfromemail(email)[0]
+                        result = database_helper.remove_login(oldtoken) # Removing old connection token from database
                     except:
                         continue
         except:
             break
-        #With the token you get corresponding email
-        #Save connection with email
-        #If same email logs in the websocket connection closes
 
 
-#@app.before_request
-#def before_request():
-#    database_helper.get_db()
+
 @app.route('/', methods=['GET'])
 def root():
     return app.send_static_file("client.html"), 200
@@ -77,7 +72,7 @@ def sign_in():
                     token += letters[math.floor(random() * len(letters))]
                 result = database_helper.store_login(token,email)
                 return jsonify({'data': token}), 201 # Successfully signed in, Token created
-            #else:
+            #else: #For checking already logged in users. Not needed for lab 3
                 #token = check
                 #return "", 409 # Already signed in
         else:
@@ -124,7 +119,7 @@ def sign_out():
         return "", 400 # No token received
     else:
         result = database_helper.remove_login(token)
-        if (result):
+        if result:
             return "", 200 # Successfully signed out
         else:
             return "", 401 # Not signed in
@@ -144,7 +139,7 @@ def change_password():
             email=check[0]
             userpass=database_helper.get_passfromemail(email)[0]
             result=bcrypt.checkpw(oldpassword,userpass)
-            if (result):
+            if result:
                 newpassword=newpassword.encode("utf-8")
                 userpass = bcrypt.hashpw(newpassword, bcrypt.gensalt(10))
                 change = database_helper.change_pass(email,userpass)

@@ -27,7 +27,7 @@ showwelcome=function(){
 gettoken=function(){
   token = localStorage.getItem("token");
   return token;
-}
+};
 
 Xpasslength=8;
 function signinvalidation(){
@@ -50,9 +50,7 @@ function signinvalidation(){
         syncstorage();
         loggedinusers[token] = siemail;
         persistloggedinusers();
-        /*showprofile();*/
         location.reload();
-        setupconnection();
       }
       else if(xhttp.status==401){
         document.getElementById("welcomemessage").innerHTML = "401 Unauthorized";
@@ -67,7 +65,7 @@ function signinvalidation(){
         document.getElementById("welcomemessage").style.display = "block";
       }
 	  }
-	}
+	};
 }
 
 function signupvalidation(){
@@ -112,7 +110,7 @@ function signupvalidation(){
         document.getElementById("welcomemessage").style.display = "block";
       }
     }
-  }
+  };
 }
 
 function getuserinfo(){
@@ -120,8 +118,8 @@ function getuserinfo(){
   let xhttp = new XMLHttpRequest();
   token=localStorage.getItem("token");
   xhttp.open("GET", "/get_user_data_by_token", true);
-  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-  xhttp.setRequestHeader("Authorization", token)
+  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  xhttp.setRequestHeader("Authorization", token);
   xhttp.send();
   xhttp.onreadystatechange=function(){
     if (xhttp.readyState==4){ 
@@ -135,7 +133,7 @@ function getuserinfo(){
         document.getElementById("homeemail").innerHTML=data[5];
       }
     }
-  }
+  };
 }
 
 function posttomywall(){
@@ -152,8 +150,8 @@ function posttomywall(){
     data = { 'email': email, 'message': content };
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/post_message", true);
-    xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-    xhttp.setRequestHeader("Authorization", token)
+    xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    xhttp.setRequestHeader("Authorization", token);
     xhttp.send(JSON.stringify(data));
     xhttp.onreadystatechange=function(){
       if (xhttp.readyState==4){
@@ -171,7 +169,7 @@ function posttomywall(){
           document.getElementById("homemessage").innerHTML = "401 Unauthorized";
         }
       }
-    }
+    };
   }
 }
 
@@ -179,8 +177,8 @@ function postedmessage(){
   let xhttp = new XMLHttpRequest();
   token=localStorage.getItem("token");
   xhttp.open("GET", "/get_user_messages_by_token", true);
-  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-  xhttp.setRequestHeader("Authorization", token)
+  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  xhttp.setRequestHeader("Authorization", token);
   xhttp.send();
   xhttp.onreadystatechange=function(){
     if (xhttp.readyState==4){
@@ -202,7 +200,7 @@ function postedmessage(){
         document.getElementById("homemessage").innerHTML="404 Not Found";
       }
     }
-  }
+  };
 }
 
 function searchuser(){
@@ -210,8 +208,8 @@ function searchuser(){
   var email=document.getElementById("search").value;
   let xhttp = new XMLHttpRequest();
   xhttp.open("GET", "/get_user_data_by_email/"+email, true);
-  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-  xhttp.setRequestHeader("Authorization", token)
+  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  xhttp.setRequestHeader("Authorization", token);
   xhttp.send();
   xhttp.onreadystatechange=function(){
     if (xhttp.readyState==4){
@@ -230,7 +228,7 @@ function searchuser(){
         document.getElementById("browsemessage").innerHTML="404 Not Found";
       }
     }
-  }
+  };
 }
 
 function getanotheruserinfo(data){
@@ -260,8 +258,8 @@ function posttoanotherwall(){
     data = { 'email': email, 'message': content };
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/post_message", true);
-    xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-    xhttp.setRequestHeader("Authorization", token)
+    xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    xhttp.setRequestHeader("Authorization", token);
     xhttp.send(JSON.stringify(data));
     xhttp.onreadystatechange=function(){
       if (xhttp.readyState==4){
@@ -279,7 +277,7 @@ function posttoanotherwall(){
           document.getElementById("browsermessage").innerHTML = "401 Unauthorized";
         }
       }
-    }
+    };
   }
 }
 
@@ -288,8 +286,8 @@ function postedanothermessage(){
   var email=document.getElementById("search").value;
   let xhttp = new XMLHttpRequest();
   xhttp.open("GET", "/get_user_messages_by_email/"+email, true);
-  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-  xhttp.setRequestHeader("Authorization", token)
+  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  xhttp.setRequestHeader("Authorization", token);
   xhttp.send();
   xhttp.onreadystatechange=function(){
     if (xhttp.readyState==4){
@@ -311,7 +309,7 @@ function postedanothermessage(){
         document.getElementById("browsermessage").innerHTML="404 Not Found";
       }
     }
-  }
+  };
 }
 
 profile = function(event, tabname){
@@ -350,8 +348,8 @@ function changepass(){
   data = { 'oldpassword': oldpass, 'newpassword': newpass };
   let xhttp = new XMLHttpRequest();
   xhttp.open("PUT", "/change_password", true);
-  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-  xhttp.setRequestHeader("Authorization", token)
+  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  xhttp.setRequestHeader("Authorization", token);
   xhttp.send(JSON.stringify(data));
   xhttp.onreadystatechange=function(){
     if (xhttp.readyState==4){
@@ -368,24 +366,24 @@ function changepass(){
         document.getElementById("accountmessage").innerHTML="401 Unauthorized";
       }
     }
-  }
+  };
 }
 
 function signout() {
   token=localStorage.getItem("token");
   let xhttp = new XMLHttpRequest();
   xhttp.open("DELETE", "/sign_out", true);
-  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-  xhttp.setRequestHeader("Authorization", token)
+  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  xhttp.setRequestHeader("Authorization", token);
   xhttp.send();
   xhttp.onreadystatechange=function(){
     if (xhttp.readyState==4 && xhttp.status==200){
       token=null;
       localStorage.removeItem("token");
       showwelcome();
-      document.getElementById("welcomemessage").innerHTML="Successfully Signed out";
+      document.getElementById("welcomemessage").innerHTML="Successfully Signed Out!";
     }
-  }
+  };
 }
 
 function syncstorage() {
@@ -408,24 +406,22 @@ function persistloggedinusers() {
 }
 
 function setupconnection(){
-  let connection = new WebSocket('ws://' + location.host + '/echo_socket');
-  // Sent token to server
+  let connection = new WebSocket('ws://' + location.host + '/echo_socket'); //New connection
   token=localStorage.getItem("token");
   connection.onopen = function() {
-    connection.send(token);
-    /*connection.send(JSON.stringify({"token": token}));*/
+    connection.send(token); //Sending token to server
   };
   connection.onerror = function(error) {
     console.log('WebSocket Error: ' + error);
   };
   connection.onmessage = function(message) {
     data = message.data
-    /*data = JSON.parse(message).data*/
-    if(data == 'Signout') {
-      connection.close();
-      signout();
-      //Remove token from localstorange
-      // Window onload
+    if(data == 'Signout') { //If signout message received
+      connection.close(); //Connection closed
+      token=null;
+      localStorage.removeItem("token"); //Removing token from local storage
+      showwelcome(); // Back to welcome page
+      document.getElementById("welcomemessage").innerHTML="Signing Out! Open in multiple windows";
     } else{
       console.log('Server: ' + data);
     }
