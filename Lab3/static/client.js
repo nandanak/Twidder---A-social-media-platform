@@ -47,11 +47,12 @@ function signinvalidation(){
       if(xhttp.status==201){
         token = JSON.parse(xhttp.responseText).data;
         localStorage.setItem("token", token);
-        setupconnection();
         syncstorage();
         loggedinusers[token] = siemail;
         persistloggedinusers();
-        showprofile();
+        /*showprofile();*/
+        location.reload();
+        setupconnection();
       }
       else if(xhttp.status==401){
         document.getElementById("welcomemessage").innerHTML = "401 Unauthorized";
@@ -313,7 +314,7 @@ function postedanothermessage(){
   }
 }
 
-profile = function(evt, tabname){
+profile = function(event, tabname){
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i=0;i<tabcontent.length;i++) {
@@ -324,9 +325,9 @@ profile = function(evt, tabname){
     tablinks[i].className = tablinks[i].className.replace("active","");
   }
   document.getElementById(tabname).style.display = "block";
-  thistab=evt.currentTarget.className;
+  thistab=event.currentTarget.className;
   if (thistab != undefined) {
-    evt.currentTarget.className += " active";
+    event.currentTarget.className += " active";
   } else {
     var hometab = document.getElementsByClassName("tablinks")[0];
     hometab.className += " active";
@@ -423,6 +424,8 @@ function setupconnection(){
     if(data == 'Signout') {
       connection.close();
       signout();
+      //Remove token from localstorange
+      // Window onload
     } else{
       console.log('Server: ' + data);
     }

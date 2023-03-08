@@ -29,7 +29,8 @@ signinvalidation = function(){ /* To sign in */
   var reply=serverstub.signIn(siemail,sipass);
   if(reply.success==true){
     localStorage.setItem("token",reply.data);
-    showprofile();
+    /*showprofile();*/
+    location.reload();
   }
   else{
     document.getElementById("welcomemessage").innerHTML=reply.message;
@@ -179,7 +180,7 @@ postedanothermessage=function(){ /* To get the posted messages in another user's
   }
 };
 
-profile = function(evt, tabname){ /* To maintain the tab content of the profile view */
+profile = function(event, tabname){ /* To maintain the tab content of the profile view */
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i=0;i<tabcontent.length;i++) {
@@ -190,9 +191,9 @@ profile = function(evt, tabname){ /* To maintain the tab content of the profile 
     tablinks[i].className = tablinks[i].className.replace("active","");
   }
   document.getElementById(tabname).style.display = "block";
-  thistab=evt.currentTarget.className;
+  thistab=event.currentTarget.className;
   if (thistab != undefined) {
-    evt.currentTarget.className += " active";
+    event.currentTarget.className += " active";
   } else {
     var hometab = document.getElementsByClassName("tablinks")[0];
     hometab.className += " active";
