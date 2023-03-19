@@ -147,7 +147,7 @@ function posttomywall(){
     return false;
   }
   else{
-    data = { 'email': email, 'message': content };
+    data = { 'toemail': email, 'message': content };
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/post_message", true);
     xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
@@ -207,9 +207,10 @@ function searchuser(){
   token=localStorage.getItem("token");
   var email=document.getElementById("search").value;
   let xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "/get_user_data_by_email/"+email, true);
+  xhttp.open("GET", "/get_user_data_by_email", true);
   xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
   xhttp.setRequestHeader("Authorization", token);
+  xhttp.setRequestHeader("email", email);
   xhttp.send();
   xhttp.onreadystatechange=function(){
     if (xhttp.readyState==4){
@@ -255,7 +256,7 @@ function posttoanotherwall(){
     return false;
   }
   else{
-    data = { 'email': email, 'message': content };
+    data = { 'toemail': email, 'message': content };
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/post_message", true);
     xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
@@ -285,9 +286,10 @@ function postedanothermessage(){
   token=localStorage.getItem("token");
   var email=document.getElementById("search").value;
   let xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "/get_user_messages_by_email/"+email, true);
+  xhttp.open("GET", "/get_user_messages_by_email", true);
   xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
   xhttp.setRequestHeader("Authorization", token);
+  xhttp.setRequestHeader("email", email);
   xhttp.send();
   xhttp.onreadystatechange=function(){
     if (xhttp.readyState==4){

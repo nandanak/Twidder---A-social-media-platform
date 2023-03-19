@@ -20,6 +20,26 @@ body {
       text-align: center;
     }
 
+    .containerreset {
+      font-family: 'Quicksand', sans-serif;
+      margin: 50px 50px 50px;
+      font-weight: normal;
+      font-size: 10.5px;
+      display: grid;
+      grid-template-rows: 125px 269px;
+      box-sizing: border-box;
+      grid-gap: 10px;
+      padding: 50px;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .containerreset div {
+      border: 3px solid black;
+      display: flex;
+      justify-content: center;
+    }
+
     .container div {
       border: 3px solid black;
       display: flex;
@@ -54,6 +74,14 @@ body {
       grid-column-end: 3;
       grid-row-start: 2;
       grid-row-end: 3;
+    }
+
+    .content-reset {
+      background-color: white;
+      width: 250pt;
+      height: 121px;
+      grid-row-start: 2;
+      grid-row-end: 2;
     }
 
     .font {
@@ -96,4 +124,10 @@ body {
       padding: 6px 12px;
       border: 1px solid #ccc;
       border-top: none;
+    }
+    
+    .dnd {
+      padding: 10px;
+      border: 1px solid #008b8b;
+      background-color: #ccffff;
     }

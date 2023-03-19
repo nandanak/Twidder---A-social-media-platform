@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reset Password</title>
+    <link href="/static/client.css" type="text/css" rel="stylesheet">
+    <script src="/static/client.js" type="text/javascript"></script>
+    <script id="resetpassview" type="text/view">
+    <div class="containerreset" >
+        <div class="content-reset">
+            <form id="resetpassform" action="{{ url_for('reset_token', token=token) }}" method="POST">
+                <h3>Reset your password</h3>
+                <table class="font">
+                <tr>
+                    <td>New Password</td>
+                    <td><input type="password" style="height: 10.5px;" id="repass" name="repass" placeholder="password" required></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password</td>
+                    <td><input type="password" style="height: 10.5px;" id="reconf" name="reconf" placeholder="password" required></td>
+                </tr>
+                </table>
+                <button type="submit" id="resetpass" value="save">Reset Password</button>
+                <button id="signin" onclick="showwelcome();" value="save">Signin</button>
+            </form>
+        </div>
+        <p><span class="alert" id="resetpassmessage"> </span></p>
+      </div>
+    </script>
+</head>
+<body>
+</body>
+</html>
